@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:task2/editbill.dart';
+import 'package:task2/main.dart';
+import 'package:task2/states/editbill.dart';
 
-class CustomBillItem extends StatelessWidget {
-  const CustomBillItem({super.key, required this.title, required this.price, required this.dueday, required this.ismonthly, required this.index});
+class Customlisttile extends StatelessWidget {
+  const Customlisttile({
+    super.key, 
+    required this.title, 
+    required this.price, 
+    required this.dueday, 
+    required this.ismonthly, 
+    required this.index, 
+    required this.boxname
+  });
   final String title;
   final double price;
   final int dueday;
   final bool ismonthly;
   final int index;
+  final ViewType boxname;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color:Colors.blueAccent,
-        borderRadius:BorderRadius.circular(16) ,
-      ),
-      child: Column(
-        children: [
-          ListTile(
+    return ListTile(
             title: Text(title,style: TextStyle(color: Colors.black, fontSize: 30),),
             subtitle: Align(
               alignment: Alignment.topLeft,
@@ -39,13 +41,13 @@ class CustomBillItem extends StatelessWidget {
                     IconButton(onPressed: (){
                       showModalBottomSheet(
                         context: context,
-                        builder: (_) => Editbill(index: index),
+                        builder: (_) => Editbill(index: index,boxname: boxname,),
                       );
                     }, 
                     icon: Icon(Icons.edit,color: Colors.black,size: 26,) 
                     ),
                     IconButton(onPressed: (){
-                      final box = Hive.box("bills_box");
+                      final box = Hive.box(boxname.displayName);
                       box.deleteAt(index);
                     }, 
                     icon: Icon(Icons.delete,color: Colors.black,size: 26,))
@@ -53,15 +55,6 @@ class CustomBillItem extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: (){}, child: Text('make as paid',style: TextStyle(color: Colors.black, fontSize: 26),)
-            ),
-          )
-        ],
-      ),
-    );
+          );
   }
 }

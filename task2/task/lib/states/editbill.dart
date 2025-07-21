@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:task2/billmodel.dart';
-import 'package:task2/customtextfield.dart';
+import 'package:task2/customs/customtextfield.dart';
+import 'package:task2/main.dart';
+import 'package:task2/models/billmodel.dart';
 
 class Editbill extends StatefulWidget {
   final int index;
-  const Editbill({super.key, required this.index});
+  final ViewType boxname;
+  
+  const Editbill({super.key, required this.index, required this.boxname});
 
   @override
   State<Editbill> createState() => _EditbillState();
@@ -21,7 +24,15 @@ class _EditbillState extends State<Editbill> {
   @override
   void initState() {
     super.initState();
-    final box = Hive.box("bills_box");
+    final box = Hive.box(widget.boxname.displayName);
+    if (box.length > widget.index) {
+      final bill = box.getAt(widget.index) as Billmodel;
+      title = bill.title;
+      price = bill.price;
+      dueday = bill.dueday;
+      ismonthly = bill.ismonthly;
+      isimportant = bill.isimportant;
+    }
     final bill = box.getAt(widget.index) as Billmodel;
     title = bill.title;
     price = bill.price;
@@ -93,7 +104,7 @@ class _EditbillState extends State<Editbill> {
                       isimportant: isimportant!,
                       ismonthly: ismonthly!,
                     );
-                    Hive.box("bills_box").putAt(widget.index, updated);
+                    Hive.box(widget.boxname.displayName).putAt(widget.index, updated);
                     Navigator.pop(context);
                   }
                 },

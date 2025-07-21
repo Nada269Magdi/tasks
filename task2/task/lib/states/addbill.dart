@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:task2/billmodel.dart';
-import 'package:task2/customtextfield.dart';
+import 'package:task2/customs/customtextfield.dart';
+import 'package:task2/models/billmodel.dart';
 
 class AddBill extends StatefulWidget {
   const AddBill({super.key});
